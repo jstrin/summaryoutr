@@ -1,0 +1,21 @@
+{
+    "collab_server" : "",
+    "contents" : "summarise_df <- summarize_df\n",
+    "created" : 1460489328974.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "4149306395",
+    "id" : "8E3323DE",
+    "lastKnownWriteTime" : 1460489368,
+    "last_content_update" : 1460489368553,
+    "path" : "~/GitHub/summaryoutr/R/aliases.R",
+    "project_path" : "R/aliases.R",
+    "properties" : {
+        "tempName" : "Untitled1"
+    },
+    "relative_order" : 3,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_source"
+}
