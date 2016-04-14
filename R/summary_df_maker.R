@@ -15,7 +15,11 @@
 #         one for each summary statistic
 ####################
 
-
+#`
+#` @param df a data frame
+#` @param stat1 character string naming a summary statistic. Current options includce: mean, median, count
+#
+#
 
 
 summarize_df <- function(df, stat1='Average', stat2='Count',

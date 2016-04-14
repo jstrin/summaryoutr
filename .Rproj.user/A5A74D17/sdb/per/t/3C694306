@@ -1,0 +1,21 @@
+{
+    "collab_server" : "",
+    "contents" : "####################\n#\n# Functions to create a dataframe with two summary stats\n#  across a variety of variables\n#\n#   inputs:\n#     df - a dataframe *required*\n#     stat1 - first summary statistic\n#     stat2 - second summary statistic\n#     l.variables - list of variables to summarise\n#     l.grouping - list of variables to group by\n#\n#   output:\n#     a data frame with two columns for each varialbe in l.variables\n#         one for each summary statistic\n####################\n\n#`\n#` @param df a data frame\n#` @param stat1 character string naming a summary statistic. Current options includce: mean, median, count\n#\n#\n\n\nsummarize_df <- function(df, stat1='Average', stat2='Count',\n                         l.variables = 'all.summary', l.grouping = 'first.summary'){\n\n  # If no grouping variable(s) are specified, use the first column\n\n  if(l.grouping == 'first.summary'){\n    l.grouping <- names(df)[-1]\n  }\n\n  # if no variables to summarise are specified, use all but the grouping variables\n\n  if(l.variables == 'all.summary'){\n   l.variables <- names(df)[-which(names(df) %in% l.grouping)]\n  }\n\n  # Create the summary functions\n\nstat.func1 <- summaryStatIdentifier(stat1)\nstat.func2 <- summaryStatIdentifier(stat2)\n\n  # create an empty data frame\ndf_out <- data.frame()\n\n  # for each varialbe in the list, summarise using the two summary stats\n\nfor(i in l.variables){\n  df_temp <- df %>%\n    select_(l.grouping, i) %>%\n    group_by_( l.grouping ) %>%\n    summarise_each(funs(stat1 = stat.func1(.), stat2 = stat.func2(.)) )\n\n  # rename the data frame using the user supplied summary statistic identifiers and the\n  #  variable names so that names will be human-readable\n  names(df_temp) <- c(l.grouping, paste(i, stat1, sep = \"_\"), paste(i, stat2, sep = \"_\"))\n\n\n# To do:\n#   - replace the if(i in l.var...) by changing the data frame creation\n#   - add in conditional to create stat over n capability for output\n\n\n  # if the variable is the first one, replace df_out with df_temp, otherwise, join together\n  #   ddataframes for output\n\n  if(i %in% l.variables[1]){\n    df_out <- df_temp\n  }else{\n  df_out <- full_join(df_out, df_temp, by = l.grouping)\n  }\n}\n\ndf_out\n}\n\n\n\n################\n#\n# Create a function to define the summary\n#  stat aliases\n#\n# Returns a function\n#\n####################\n\nsummaryStatIdentifier <- function(summary.stat){\n  if( grepl(\"count\", summary.stat, ignore.case = T)){\n    stat.summariser <- function(.){\n      sum(!is.na(.))\n    }\n  }else{\n  if(grepl(\"Average\", summary.stat, ignore.case = T) |\n     grepl(\"mean\", summary.stat, ignore.case = T) |\n     grepl(\"ave\", summary.stat, ignore.case = T)){\n    stat.summariser <- function(.){\n      mean(., na.rm = T)\n    }\n  }else{\n    if(grepl(\"Median\", summary.stat, ignore.case = T) |\n       grepl(\"Med\", summary.stat, ignore.case = T)){\n      stat.summariser <- function(.){\n        median(., na.rm = T)\n      }\n    }\n  }\n  }\n  stat.summariser\n}\n",
+    "created" : 1460577979488.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "3664435535",
+    "id" : "3C694306",
+    "lastKnownWriteTime" : 1460602038,
+    "last_content_update" : -2147483648,
+    "path" : "~/GitHub/summaryoutr/R/summary_df_maker.R",
+    "project_path" : "R/summary_df_maker.R",
+    "properties" : {
+        "docOutlineVisible" : "0"
+    },
+    "relative_order" : 2,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_source"
+}
